@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google"
+import Script from "next/script"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -23,6 +24,10 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
     >
       <body>
+        <Script
+          src="/scripts/reset-scroll-on-reload.js"
+          strategy="beforeInteractive"
+        />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

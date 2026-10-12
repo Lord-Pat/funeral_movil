@@ -1,0 +1,219 @@
+.funeral-section {
+  min-height: 100svh;
+  padding: 116px clamp(20px, 4vw, 64px) 40px;
+  display: flex;
+  align-items: center;
+  color: #f6f5f1;
+  scroll-margin-top: 84px;
+}
+.funeral-inner {
+  width: 100%;
+  max-width: 1368px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  gap: clamp(24px, 3vw, 48px);
+}
+.funeral-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #a9b8a8;
+  margin-bottom: 20px;
+}
+.funeral-copy h2 {
+  font-size: clamp(40px, 4.2vw, 64px);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.funeral-description {
+  margin-top: 24px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #b9bdb7;
+}
+.funeral-ending {
+  margin-top: 32px;
+}
+.funeral-conclusion {
+  color: #a9b8a8;
+  font-size: clamp(20px, 1.65vw, 24px);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+.funeral-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 48px;
+  padding: 12px 24px;
+  margin-top: 24px;
+  border-radius: 999px;
+  background: #f6f5f1;
+  color: #151716;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.funeral-cta:hover {
+  background: #e1e8df;
+}
+.funeral-cta:focus-visible {
+  outline: 2px solid #a9b8a8;
+  outline-offset: 5px;
+}
+.funeral-visual {
+  position: relative;
+  min-width: 0;
+  padding-top: 136px;
+}
+.funeral-stage {
+  position: relative;
+  width: 100%;
+  max-width: calc((100svh - 280px) * 1.333);
+  margin-inline: auto;
+  aspect-ratio: 1448 / 1086;
+  isolation: isolate;
+}
+.funeral-coffin {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.funeral-phone-position {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  width: 17%;
+  transform: translate(-50%, -50%);
+}
+.funeral-phone {
+  position: relative;
+  transform: matrix(0.55, -0.3, 0.82, 0.27, 0, 0);
+  transform-origin: center;
+}
+.funeral-phone > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.funeral-phone-eyes {
+  position: absolute;
+  top: 41%;
+  left: 23%;
+  width: 54%;
+  color: #f6f5f1;
+}
+.funeral-flowers {
+  position: absolute;
+  left: 76%;
+  top: 79%;
+  width: 21%;
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+.funeral-flowers svg {
+  display: block;
+  width: 100%;
+}
+.funeral-bubble {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(100%, 290px);
+  padding: 20px 24px;
+  border: 1px solid #383c39;
+  border-radius: 24px 24px 24px 6px;
+  background: #151716;
+}
+.funeral-bubble-label {
+  color: #a9b8a8;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.funeral-message-slot {
+  position: relative;
+  min-height: 80px;
+  font-size: 17px;
+  line-height: 1.45;
+}
+.funeral-message-initial {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+}
+.funeral-message-farewell {
+  position: relative;
+}
+@media (min-width: 1024px) and (max-height: 850px) {
+  .funeral-section {
+    padding-bottom: 28px;
+  }
+  .funeral-copy h2 {
+    font-size: clamp(38px, 3.5vw, 48px);
+  }
+  .funeral-description {
+    font-size: 16px;
+    margin-top: 20px;
+    line-height: 1.5;
+  }
+  .funeral-conclusion {
+    font-size: 20px;
+  }
+  .funeral-ending {
+    margin-top: 24px;
+  }
+  .funeral-cta {
+    margin-top: 20px;
+  }
+  .funeral-visual {
+    padding-top: 124px;
+  }
+  .funeral-bubble {
+    padding: 16px 20px;
+  }
+}
+@media (max-width: 1023px) {
+  .funeral-stage {
+    max-width: none;
+  }
+  .funeral-section {
+    padding-bottom: 56px;
+  }
+  .funeral-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    max-width: 720px;
+  }
+  .funeral-copy {
+    display: contents;
+  }
+  .funeral-copy h2 {
+    font-size: clamp(36px, 6vw, 52px);
+  }
+  .funeral-description {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  .funeral-visual {
+    grid-row: 2;
+    padding-top: 0;
+  }
+  .funeral-bubble {
+    position: relative;
+    margin: 20px 0 0 auto;
+    width: min(100%, 360px);
+  }
+  .funeral-message-slot {
+    min-height: 0;
+  }
+  .funeral-ending {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,251 @@
+.rebirth-section {
+  min-height: 100svh;
+  padding: 112px clamp(20px, 4vw, 64px) 28px;
+  display: flex;
+  align-items: center;
+  color: #151716;
+  scroll-margin-top: 84px;
+}
+.rebirth-inner {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+.rebirth-heading {
+  max-width: 860px;
+  margin-inline: auto;
+  text-align: center;
+}
+.rebirth-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  color: #47624f;
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+}
+.rebirth-heading h2 {
+  font-size: clamp(34px, 3.5vw, 48px);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.rebirth-intro {
+  margin-top: 18px;
+  color: #5a5f59;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.rebirth-diagram {
+  margin-top: 20px;
+}
+.rebirth-question {
+  text-align: center;
+  color: #47624f;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.rebirth-device {
+  width: 56px;
+  height: 76px;
+  margin-inline: auto;
+  color: #47624f;
+}
+.rebirth-routing {
+  display: block;
+  width: 100%;
+  height: 48px;
+}
+.rebirth-routing path,
+.rebirth-mobile-line line,
+.rebirth-mobile-line path {
+  stroke: #47624f;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.rebirth-branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 80px;
+}
+.rebirth-branch {
+  position: relative;
+  min-width: 0;
+  text-align: center;
+}
+.rebirth-icon {
+  display: block;
+  margin-inline: auto;
+  color: #47624f;
+}
+.rebirth-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #47624f;
+  letter-spacing: 0.12em;
+  margin-top: 12px;
+}
+.rebirth-branch h3 {
+  font-size: clamp(22px, 2vw, 27px);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin-top: 8px;
+  text-wrap: balance;
+}
+.rebirth-description {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #5a5f59;
+  margin-top: 14px;
+}
+.rebirth-quote {
+  max-width: 430px;
+  margin: 12px auto 0;
+  padding: 10px 16px;
+  border: 1px solid #bbcabc;
+  border-radius: 16px 16px 16px 4px;
+  color: #47624f;
+  font-size: 14px;
+  line-height: 1.4;
+  background: #f6f5f1;
+}
+.rebirth-conclusion {
+  margin-top: 20px;
+  text-align: center;
+}
+.rebirth-conclusion > p:first-child {
+  font-size: clamp(23px, 2.2vw, 29px);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.rebirth-conclusion > p:nth-child(2) {
+  margin: 10px auto 0;
+  max-width: 800px;
+  color: #5a5f59;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.rebirth-conclusion > .rebirth-management {
+  margin-top: 10px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #5a5f59;
+}
+.rebirth-mobile-line {
+  display: none;
+}
+@media (min-width: 1024px) and (max-height: 850px) {
+  .rebirth-section {
+    padding-bottom: 20px;
+  }
+  .rebirth-heading h2 {
+    font-size: 36px;
+  }
+  .rebirth-intro {
+    margin-top: 14px;
+    font-size: 15px;
+  }
+  .rebirth-diagram {
+    margin-top: 16px;
+  }
+  .rebirth-device {
+    height: 58px;
+  }
+  .rebirth-device > svg {
+    height: 58px;
+  }
+  .rebirth-routing {
+    height: 32px;
+  }
+  .rebirth-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .rebirth-label {
+    margin-top: 8px;
+  }
+  .rebirth-branch h3 {
+    font-size: 23px;
+  }
+  .rebirth-description {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .rebirth-quote {
+    margin-top: 12px;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+  .rebirth-conclusion {
+    margin-top: 16px;
+  }
+  .rebirth-conclusion > p:first-child {
+    font-size: 24px;
+  }
+}
+@media (max-width: 1023px) {
+  .rebirth-section {
+    padding-bottom: 56px;
+  }
+  .rebirth-inner {
+    max-width: 720px;
+  }
+  .rebirth-heading,
+  .rebirth-question,
+  .rebirth-conclusion {
+    text-align: left;
+  }
+  .rebirth-diagram {
+    margin-top: 32px;
+  }
+  .rebirth-device {
+    margin-left: 0;
+    width: 52px;
+  }
+  .rebirth-device > svg {
+    width: 52px;
+  }
+  .rebirth-routing {
+    display: none;
+  }
+  .rebirth-branches {
+    display: block;
+    padding-left: 54px;
+    margin-top: 24px;
+  }
+  .rebirth-branch {
+    text-align: left;
+  }
+  .rebirth-branch + .rebirth-branch {
+    margin-top: 32px;
+  }
+  .rebirth-icon {
+    margin-left: 0;
+  }
+  .rebirth-description {
+    font-size: 16px;
+  }
+  .rebirth-quote {
+    margin-inline: 0;
+  }
+  .rebirth-mobile-line {
+    display: block;
+    position: absolute;
+    left: -48px;
+    top: -24px;
+    width: 48px;
+    height: calc(100% + 32px);
+  }
+  .rebirth-branch:last-child .rebirth-mobile-line {
+    height: 44px;
+  }
+  .rebirth-conclusion {
+    margin-top: 36px;
+  }
+}

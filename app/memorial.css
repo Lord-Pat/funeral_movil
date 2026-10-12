@@ -1,0 +1,179 @@
+.memorial-section {
+  min-height: 100svh;
+  padding: 116px clamp(20px, 4vw, 64px) 48px;
+  color: #151716;
+  scroll-margin-top: 84px;
+}
+.memorial-inner {
+  max-width: 1200px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: clamp(40px, 6vw, 96px);
+  row-gap: 40px;
+  align-items: center;
+}
+.memorial-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #47624f;
+  margin-bottom: 20px;
+}
+.memorial-heading h2 {
+  font-size: clamp(38px, 4.2vw, 60px);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.memorial-intro {
+  color: #5a5f59;
+  font-size: 17px;
+  line-height: 1.6;
+  margin-top: 24px;
+}
+.memorial-instructions {
+  margin-top: 28px;
+  color: #47624f;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.memorial-card-entry {
+  width: 100%;
+  max-width: 430px;
+  margin-inline: auto;
+}
+.memorial-card {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  width: 100%;
+  isolation: isolate;
+  background: #151716;
+  color: #f6f5f1;
+}
+.memorial-decoration {
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.memorial-card-content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  font-family: Georgia, "Times New Roman", serif;
+}
+.memorial-in-memory,
+.memorial-rest,
+.memorial-signature {
+  position: absolute;
+  left: 15%;
+  width: 70%;
+  text-align: center;
+}
+.memorial-in-memory {
+  top: 15.5%;
+  font-family: var(--font-sans), sans-serif;
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: 0.2em;
+}
+.memorial-phone-name,
+.memorial-dedication {
+  position: absolute;
+  left: 15%;
+  width: 70%;
+  display: block;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #f6f5f1;
+  text-align: center;
+  font-family: inherit;
+  outline: none;
+  caret-color: #f6f5f1;
+}
+.memorial-phone-name {
+  top: 21%;
+  min-height: 40px;
+  font-size: clamp(18px, 2.1vw, 27px);
+  line-height: 1.2;
+}
+.memorial-dedication {
+  top: 60%;
+  height: 10%;
+  font-size: 16px;
+  line-height: 1.3;
+  resize: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #a9b8a8 transparent;
+}
+.memorial-phone-name::placeholder,
+.memorial-dedication::placeholder {
+  color: #b9bdb7;
+  opacity: 1;
+}
+.memorial-phone-name:focus,
+.memorial-dedication:focus {
+  outline: 1px solid #a9b8a8;
+  outline-offset: 4px;
+}
+.memorial-rest {
+  top: 73%;
+  font-size: clamp(12px, 1.2vw, 15px);
+  letter-spacing: 0.15em;
+}
+.memorial-signature {
+  top: 78%;
+  font-family: var(--font-sans), sans-serif;
+  font-size: clamp(9px, 0.9vw, 11px);
+  letter-spacing: 0.1em;
+}
+.memorial-conclusion {
+  grid-column: 1 / -1;
+  max-width: 800px;
+  margin-inline: auto;
+  text-align: center;
+  text-wrap: balance;
+  font-size: clamp(22px, 2vw, 27px);
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  color: #47624f;
+}
+@media (max-width: 1023px) {
+  .memorial-inner {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 720px;
+    row-gap: 32px;
+  }
+  .memorial-heading h2 {
+    font-size: clamp(36px, 6vw, 52px);
+  }
+  .memorial-intro {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  .memorial-instructions {
+    margin-top: 20px;
+  }
+  .memorial-card-entry {
+    max-width: 400px;
+  }
+  .memorial-phone-name {
+    font-size: 23px;
+  }
+}
+@media (max-width: 380px) {
+  .memorial-phone-name {
+    top: 19.5%;
+    font-size: 19px;
+  }
+  .memorial-dedication {
+    top: 59.5%;
+    height: 11.5%;
+    left: 13%;
+    width: 74%;
+  }
+}

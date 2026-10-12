@@ -1,0 +1,240 @@
+/* Pin spacers manage layout; native anchoring must not offset their insertion/removal. */
+main:has(.problem-section) {
+  overflow-anchor: none;
+}
+.problem-section {
+  min-height: 100svh;
+  padding: 112px clamp(20px, 4vw, 64px) 32px;
+  color: #151716;
+  scroll-margin-top: 84px;
+  display: flex;
+  align-items: center;
+}
+.problem-inner {
+  width: 100%;
+  max-width: 1368px;
+  margin-inline: auto;
+}
+.problem-heading {
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+}
+.problem-eyebrow {
+  color: #47624f;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  margin-bottom: 18px;
+}
+.problem-heading h2 {
+  font-size: clamp(32px, 3.4vw, 52px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.problem-description {
+  max-width: 780px;
+  margin: 20px auto 0;
+  color: #5a5f59;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.problem-scene {
+  margin: 36px auto;
+  max-width: 1100px;
+}
+.problem-visual {
+  color: #47624f;
+}
+.problem-single {
+  display: none;
+}
+.problem-devices {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 420px;
+  margin-inline: auto;
+}
+.problem-device {
+  width: 100%;
+  height: 64px;
+}
+.problem-statistics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 36px;
+}
+.problem-stat {
+  min-width: 0;
+  border-top: 1px solid #d6d9d2;
+  padding-top: 20px;
+}
+.problem-number {
+  font-size: clamp(64px, 7vw, 112px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.problem-number span {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(20px, 2.2vw, 32px);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.problem-number .problem-percent {
+  display: inline;
+  font-size: 0.55em;
+}
+.problem-stat > p:last-of-type {
+  color: #5a5f59;
+  font-size: 17px;
+  line-height: 1.6;
+  margin-top: 20px;
+  max-width: 390px;
+}
+.problem-bar {
+  margin-top: 28px;
+  height: 8px;
+  width: 100%;
+  background: #cfd5ca;
+}
+.problem-bar-fill {
+  width: 22.3%;
+  height: 100%;
+  background: #47624f;
+  transform-origin: left center;
+}
+.problem-footer {
+  text-align: center;
+}
+.problem-conclusion {
+  color: #47624f;
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 500;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+.problem-source {
+  margin: 16px auto 0;
+  max-width: 850px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #5a5f59;
+}
+.problem-source a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.problem-source a:hover {
+  color: #151716;
+}
+.problem-source a:focus-visible {
+  outline: 2px solid #47624f;
+  outline-offset: 4px;
+}
+.problem-section[data-narrative="true"] .problem-scene {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 64px;
+  min-height: clamp(260px, 34svh, 400px);
+}
+.problem-section[data-narrative="true"] .problem-visual {
+  display: grid;
+  place-items: center;
+}
+.problem-section[data-narrative="true"] .problem-single {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #47624f;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  margin: -110px 0 0 -140px;
+}
+.problem-single svg {
+  width: 100px;
+  height: 180px;
+}
+.problem-single figcaption {
+  font-size: 17px;
+  line-height: 1.5;
+  text-align: center;
+}
+.problem-section[data-narrative="true"] .problem-statistics {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+.problem-section[data-narrative="true"] .problem-stat {
+  grid-area: 1 / 1;
+  border: 0;
+  padding: 0;
+}
+@media (min-width: 768px) and (max-height: 800px) {
+  .problem-heading h2 {
+    font-size: clamp(32px, 3vw, 42px);
+  }
+  .problem-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 16px;
+  }
+  .problem-section[data-narrative="true"] .problem-scene {
+    margin-block: 24px;
+    min-height: 240px;
+  }
+  .problem-number {
+    font-size: 80px;
+  }
+  .problem-device {
+    height: 48px;
+  }
+  .problem-devices {
+    gap: 20px;
+  }
+}
+@media (max-width: 767px) {
+  .problem-section {
+    padding-bottom: 56px;
+  }
+  .problem-heading {
+    text-align: left;
+  }
+  .problem-description {
+    font-size: 16px;
+  }
+  .problem-statistics {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .problem-device {
+    height: 44px;
+  }
+  .problem-devices {
+    gap: 20px;
+    max-width: 300px;
+  }
+  .problem-device:nth-child(n + 9) {
+    display: none;
+  }
+  .problem-number {
+    font-size: clamp(64px, 18vw, 90px);
+  }
+  .problem-footer {
+    text-align: left;
+  }
+  .problem-source {
+    font-size: 13px;
+  }
+}
