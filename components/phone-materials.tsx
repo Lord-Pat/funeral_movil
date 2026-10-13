@@ -44,6 +44,8 @@ export function PhoneMaterials() {
       const section = sectionRef.current!
       const video = videoRef.current!
       const inner = section.querySelector<HTMLElement>(".materials-inner")!
+      const stage = section.querySelector<HTMLElement>(".materials-stage")!
+      const videoFrame = section.querySelector<HTMLElement>(".materials-media")!
       const exploration = section.querySelector<HTMLElement>(
         ".materials-exploration"
       )!
@@ -53,12 +55,59 @@ export function PhoneMaterials() {
       const hint = section.querySelector(".materials-hint")!
       const media = gsap.matchMedia()
       let disposed = false
+      let fontsReady = document.fonts.status === "loaded"
       let timer: ReturnType<typeof setTimeout> | undefined
       let progress: number | undefined
       let pendingProgress: number | undefined
       let targetTime = 0.6
       let controlled = false
       let wasReady = true
+      let restoreFrame = 0
+      const restoreKey = `phone-materials:${location.pathname}`
+      let reloadProgress: number | undefined
+      try {
+        if (
+          (
+            performance.getEntriesByType(
+              "navigation"
+            )[0] as PerformanceNavigationTiming
+          )?.type === "reload"
+        ) {
+          const stored = sessionStorage.getItem(restoreKey)
+          if (stored !== null) reloadProgress = Number(stored)
+        }
+      } catch {
+        /* Native restoration is used when storage is unavailable. */
+      }
+      const rememberPosition = () => {
+        const scene = ScrollTrigger.getById("phone-materials-scene")
+        try {
+          if (scene?.isActive)
+            sessionStorage.setItem(restoreKey, String(scene.progress))
+          else sessionStorage.removeItem(restoreKey)
+        } catch {
+          /* Storage is optional. */
+        }
+      }
+      const restorePosition = () => {
+        if (reloadProgress === undefined || document.readyState !== "complete")
+          return
+        cancelAnimationFrame(restoreFrame)
+        restoreFrame = requestAnimationFrame(() => {
+          restoreFrame = requestAnimationFrame(() => {
+            if (disposed) return
+            const scene = ScrollTrigger.getById("phone-materials-scene")
+            if (!scene) return
+            ScrollTrigger.refresh()
+            window.scrollTo({
+              top: scene.start + (scene.end - scene.start) * reloadProgress!,
+              behavior: "instant",
+            })
+            reloadProgress = undefined
+            ScrollTrigger.update()
+          })
+        })
+      }
       // Coalesce seeks: a slow decoder finishes its current seek before receiving the latest target.
       const seek = () => {
         if (!controlled || disposed || video.readyState < 1 || video.seeking)
@@ -80,7 +129,12 @@ export function PhoneMaterials() {
         setReady(value)
       }
       const setup = () => {
-        if (disposed || !Number.isFinite(video.duration) || video.duration <= 0)
+        if (
+          disposed ||
+          !fontsReady ||
+          !Number.isFinite(video.duration) ||
+          video.duration <= 0
+        )
           return
         const savedY = window.scrollY
         const savedProgress = pendingProgress
@@ -95,6 +149,7 @@ export function PhoneMaterials() {
             const finalTime = Math.max(0, video.duration - 1 / 24)
             const firstTime = Math.min(0.6, finalTime)
             const fallback = () => {
+              gsap.set(section, { attr: { "data-narrative": "false" } })
               controlled = false
               setEnhanced(false)
               setExplorable(true)
@@ -107,15 +162,42 @@ export function PhoneMaterials() {
             }
             gsap.set(section, { attr: { "data-narrative": "true" } })
             const style = getComputedStyle(section)
-            if (
-              inner.offsetHeight +
+            const availableHeight =
+              window.innerHeight -
+              parseFloat(style.paddingTop) -
+              parseFloat(style.paddingBottom)
+            // Apply the narrative layout before measuring. Text stays at its
+            // natural size; only the video shrinks to leave room for every row.
+            let videoWidth = Math.min(848, inner.clientWidth)
+            gsap.set(stage, { "--materials-stage-width": `${videoWidth}px` })
+            // Wrapping a label can increase its row height, so remeasure after
+            // shrinking. This bounded, monotonic pass cannot create resize loops.
+            for (let pass = 0; pass < 3; pass++) {
+              const nonVideoHeight =
+                inner.getBoundingClientRect().height -
+                videoFrame.getBoundingClientRect().height
+              const availableVideoHeight = availableHeight - nonVideoHeight - 4
+              videoWidth = Math.max(
+                0,
+                Math.floor(
+                  Math.min(videoWidth, availableVideoHeight * (848 / 478))
+                )
+              )
+              gsap.set(stage, { "--materials-stage-width": `${videoWidth}px` })
+            }
+            const canPin = !(
+              videoWidth < 220 ||
+              inner.getBoundingClientRect().height +
                 parseFloat(style.paddingTop) +
                 parseFloat(style.paddingBottom) >
               window.innerHeight + 1
-            ) {
-              gsap.set(section, { attr: { "data-narrative": "false" } })
-              fallback()
-              return
+            )
+            if (!canPin) {
+              // A short CSS viewport must never turn the desktop scene into
+              // a paused player. Keep the same timeline with natural scrolling.
+              gsap.set(stage, {
+                "--materials-stage-width": `${Math.min(848, inner.clientWidth, Math.max(360, window.innerHeight))}px`,
+              })
             }
             setEnhanced(true)
             controlled = true
@@ -137,23 +219,41 @@ export function PhoneMaterials() {
               .to(
                 labels,
                 { autoAlpha: 1, y: 0, duration: 0.06, stagger: 0.025 },
-                0.48
+                0.6
               )
-              .to(lines, { autoAlpha: 1, duration: 0.12 }, 0.5)
-              .to(exploration, { autoAlpha: 1, duration: 0.08 }, 0.6)
-              .addLabel("exploration", 0.68)
+              .to(lines, { autoAlpha: 1, duration: 0.08 }, 0.6)
+              .to(exploration, { autoAlpha: 1, duration: 0.08 }, 0.73)
+              .addLabel("exploration", 0.81)
               .to(conclusion, { autoAlpha: 1, duration: 0.1 }, 0.78)
               .addLabel("conclusion", 0.88)
               .to(state, { time: finalTime, duration: 0.4, ease: "none" }, 0.6)
             const width = window.innerWidth
             const height = window.innerHeight
+            if (!canPin) {
+              const trigger = ScrollTrigger.create({
+                id: "phone-materials-scene",
+                trigger: stage,
+                animation: timeline,
+                start: "top 65%",
+                end: "bottom 35%",
+                scrub: 0.45,
+                invalidateOnRefresh: true,
+                refreshPriority: -2,
+                onRefresh: (self) => {
+                  timeline.totalProgress(self.progress)
+                  sync()
+                },
+              })
+              sync()
+              return () => trigger.kill()
+            }
             const cleanup = createScrollScene({
               id: "phone-materials-scene",
               element: section,
               timeline,
               screens: 1.8,
-              stops: [0, 0.68, 0.92, 1],
-              wheelStops: width >= 1024 ? [0, 0.68, 0.92] : [],
+              stops: [0, 0.81, 0.92, 1],
+              wheelStops: width >= 1024 ? [0, 0.81, 0.92] : [],
               refreshPriority: -2,
               onUpdate: (trigger) => {
                 if (
@@ -181,10 +281,12 @@ export function PhoneMaterials() {
           })
           ScrollTrigger.update()
         }
+        restorePosition()
       }
       const resize = () => {
         if (timer === undefined) pendingProgress = progress
         clearTimeout(timer)
+        cancelAnimationFrame(restoreFrame)
         timer = setTimeout(() => {
           setup()
           pendingProgress = undefined
@@ -208,11 +310,21 @@ export function PhoneMaterials() {
       video.addEventListener("seeked", seek)
       window.addEventListener("resize", resize)
       window.addEventListener("pageshow", refresh)
-      void document.fonts.ready.then(refresh)
+      window.addEventListener("load", restorePosition)
+      window.addEventListener("pagehide", rememberPosition)
+      void document.fonts.ready.then(() => {
+        if (fontsReady) {
+          refresh()
+          return
+        }
+        fontsReady = true
+        if (!disposed) setup()
+      })
       setup()
       return () => {
         disposed = true
         clearTimeout(timer)
+        cancelAnimationFrame(restoreFrame)
         video.pause()
         video.removeEventListener("loadedmetadata", setup)
         video.removeEventListener("error", handleError)
@@ -220,6 +332,8 @@ export function PhoneMaterials() {
         video.removeEventListener("seeked", seek)
         window.removeEventListener("resize", resize)
         window.removeEventListener("pageshow", refresh)
+        window.removeEventListener("load", restorePosition)
+        window.removeEventListener("pagehide", rememberPosition)
         media.revert()
       }
     },
@@ -276,7 +390,7 @@ export function PhoneMaterials() {
               viewBox="0 0 848 478"
               aria-hidden="true"
             >
-              <path d="M102 478 L178 325 M305 478 L288 300 M517 478 L475 285 M746 478 L580 320" />
+              <path d="M106 478 L178 325 M318 478 L288 300 M530 478 L475 285 M742 478 L580 320" />
               <circle cx="178" cy="325" r="3" />
               <circle cx="288" cy="300" r="3" />
               <circle cx="475" cy="285" r="3" />

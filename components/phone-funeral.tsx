@@ -65,6 +65,52 @@ export function PhoneFuneral() {
       let timer: ReturnType<typeof setTimeout> | undefined
       let progress: number | undefined
       let pendingProgress: number | undefined
+      let restoreFrame = 0
+      const restoreKey = `phone-funeral:${location.pathname}`
+      let reloadProgress: number | undefined
+      try {
+        if (
+          (
+            performance.getEntriesByType(
+              "navigation"
+            )[0] as PerformanceNavigationTiming
+          )?.type === "reload"
+        ) {
+          const stored = sessionStorage.getItem(restoreKey)
+          if (stored !== null) reloadProgress = Number(stored)
+        }
+      } catch {
+        /* Native restoration is used when storage is unavailable. */
+      }
+      const remember = () => {
+        const scene = ScrollTrigger.getById("phone-funeral-scene")
+        try {
+          if (scene?.isActive)
+            sessionStorage.setItem(restoreKey, String(scene.progress))
+          else sessionStorage.removeItem(restoreKey)
+        } catch {
+          /* Storage is optional. */
+        }
+      }
+      const restore = () => {
+        if (reloadProgress === undefined || document.readyState !== "complete")
+          return
+        cancelAnimationFrame(restoreFrame)
+        restoreFrame = requestAnimationFrame(() => {
+          restoreFrame = requestAnimationFrame(() => {
+            if (disposed) return
+            const scene = ScrollTrigger.getById("phone-funeral-scene")
+            if (!scene) return
+            ScrollTrigger.refresh()
+            window.scrollTo({
+              top: scene.start + (scene.end - scene.start) * reloadProgress!,
+              behavior: "instant",
+            })
+            reloadProgress = undefined
+            ScrollTrigger.update()
+          })
+        })
+      }
       const setup = () => {
         if (disposed) return
         const savedY = window.scrollY
@@ -155,6 +201,7 @@ export function PhoneFuneral() {
           })
           ScrollTrigger.update()
         }
+        restore()
       }
       const resize = () => {
         if (timer === undefined) pendingProgress = progress
@@ -172,6 +219,8 @@ export function PhoneFuneral() {
       images.forEach((image) => image.addEventListener("load", refresh))
       window.addEventListener("resize", resize)
       window.addEventListener("pageshow", refresh)
+      window.addEventListener("load", restore)
+      window.addEventListener("pagehide", remember)
       void document.fonts.ready.then(() => {
         if (!disposed) setup()
       })
@@ -179,9 +228,12 @@ export function PhoneFuneral() {
       return () => {
         disposed = true
         clearTimeout(timer)
+        cancelAnimationFrame(restoreFrame)
         images.forEach((image) => image.removeEventListener("load", refresh))
         window.removeEventListener("resize", resize)
         window.removeEventListener("pageshow", refresh)
+        window.removeEventListener("load", restore)
+        window.removeEventListener("pagehide", remember)
         media.revert()
       }
     },

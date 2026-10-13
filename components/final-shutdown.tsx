@@ -42,18 +42,11 @@ export function FinalShutdown({
         let veilTween: gsap.core.Tween | undefined
         const top = () => section.getBoundingClientRect().top + window.scrollY
         const boundary = () => top() - window.innerHeight
-        const editing = () => {
-          const active = document.activeElement
-          if (
-            !(active instanceof Element) ||
-            !active.closest("input, textarea, select, [contenteditable=true]")
+        const editing = () =>
+          document.activeElement instanceof Element &&
+          !!document.activeElement.closest(
+            "input, textarea, select, [contenteditable=true]"
           )
-            return false
-          // A field in the previous scene can retain focus after scrolling away.
-          // Protect editing only while that field is still visible.
-          const bounds = active.getBoundingClientRect()
-          return bounds.bottom > 0 && bounds.top < window.innerHeight
-        }
         const reveal = () => {
           if (transitioning) entered = true
           timeline?.kill()
@@ -66,7 +59,10 @@ export function FinalShutdown({
           gsap.set(elements, { autoAlpha: 1, y: 0 })
         }
         const shutdown = contextSafe!(() => {
-          if (entered || editing()) return
+          if (entered || editing()) {
+            reveal()
+            return
+          }
           entered = true
           transitioning = false
           gsap.set(content, { autoAlpha: 1 })

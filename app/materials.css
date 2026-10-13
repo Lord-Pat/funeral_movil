@@ -144,25 +144,23 @@
   color: #5a5f59;
 }
 .materials-section[data-narrative="true"] .materials-stage {
-  max-width: max(360px, min(848px, calc((100svh - 600px) * 1.774)));
-  padding-bottom: 52px;
+  max-width: min(848px, var(--materials-stage-width, 848px));
 }
 .materials-section[data-narrative="true"] .materials-connectors {
   display: block;
 }
 .materials-section[data-narrative="true"] .materials-labels {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 44px;
-  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 8px;
 }
 .materials-section[data-narrative="true"] .materials-label {
-  position: absolute;
-  top: 0;
-  transform: translateX(-50%);
-  white-space: nowrap;
+  min-width: 0;
+  max-width: calc(100% - 8px);
+  justify-self: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
   font-size: 12px;
   padding-inline: 10px;
 }
@@ -183,6 +181,40 @@
     margin-top: 8px;
   }
 }
+@media (min-width: 768px) and (max-height: 740px) {
+  .materials-section[data-narrative="true"] {
+    padding-top: 104px;
+    padding-bottom: 16px;
+  }
+  .materials-section[data-narrative="true"] .materials-eyebrow {
+    margin-bottom: 8px;
+  }
+  .materials-section[data-narrative="true"] .materials-heading h2 {
+    font-size: clamp(26px, 2.4vw, 32px);
+  }
+  .materials-section[data-narrative="true"] .materials-description {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .materials-section[data-narrative="true"] .materials-hint {
+    margin-block: 8px;
+    font-size: 12px;
+  }
+  .materials-section[data-narrative="true"] .materials-exploration {
+    min-height: 68px;
+    margin-top: 8px;
+  }
+  .materials-section[data-narrative="true"] .materials-exploration p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .materials-section[data-narrative="true"] .materials-conclusion {
+    margin-top: 8px;
+    font-size: 18px;
+    line-height: 1.3;
+  }
+}
 @media (max-width: 1023px) {
   .materials-section[data-narrative="true"] .materials-stage {
     padding-bottom: 0;
@@ -192,7 +224,7 @@
   }
   .materials-section[data-narrative="true"] .materials-labels {
     position: static;
-    height: auto;
+    display: flex;
     margin-top: 12px;
   }
   .materials-section[data-narrative="true"] .materials-label {
