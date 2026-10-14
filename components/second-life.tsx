@@ -20,6 +20,9 @@ export function SecondLife() {
       const conclusion = section.querySelector(".rebirth-conclusion")!
       const stem = section.querySelector(".rebirth-stem")!
       const paths = section.querySelectorAll(".rebirth-path")!
+      const introduction = section.querySelectorAll(
+        ".rebirth-heading > *, .rebirth-question, .rebirth-device"
+      )
       const media = gsap.matchMedia()
       let disposed = false
       let timer: ReturnType<typeof setTimeout> | undefined
@@ -82,44 +85,111 @@ export function SecondLife() {
             reduced: "(prefers-reduced-motion: reduce)",
           },
           (context) => {
-            if (context.conditions!.reduced || window.innerWidth < 1024) return
+            if (context.conditions!.reduced) return
             const style = getComputedStyle(section)
-            if (
+            const canPin = window.innerWidth >= 1024 && !(
               inner.offsetHeight +
                 parseFloat(style.paddingTop) +
                 parseFloat(style.paddingBottom) >
               window.innerHeight + 1
             )
+            if (!canPin) {
+              // Tall layouts keep native scrolling and reveal each block where
+              // it actually becomes visible, including the vertical mobile path.
+              if (window.innerWidth >= 1024) {
+                gsap.fromTo(
+                  [stem, ...paths],
+                  { strokeDasharray: 1, strokeDashoffset: 1 },
+                  {
+                    strokeDashoffset: 0,
+                    ease: "none",
+                    scrollTrigger: {
+                      trigger: section.querySelector(".rebirth-routing"),
+                      start: "top 85%",
+                      end: "bottom 55%",
+                      scrub: 0.5,
+                      invalidateOnRefresh: true,
+                      refreshPriority: -5,
+                    },
+                  }
+                )
+              }
+              for (const block of [...introduction, ...branches, conclusion]) {
+                const branch = block.classList.contains("rebirth-branch")
+                gsap.fromTo(
+                  block,
+                  {
+                    autoAlpha: 0,
+                    clipPath: branch
+                      ? "inset(-32px -8px 100% -56px)"
+                      : "inset(0 0 100% 0)",
+                    y: -8,
+                  },
+                  {
+                    autoAlpha: 1,
+                    clipPath: branch
+                      ? "inset(-32px -8px -40px -56px)"
+                      : "inset(0 0 0% 0)",
+                    y: 0,
+                    ease: "none",
+                    scrollTrigger: {
+                      trigger: block,
+                      start: "top 85%",
+                      end: "top 55%",
+                      scrub: 0.5,
+                      invalidateOnRefresh: true,
+                      refreshPriority: -5,
+                    },
+                  }
+                )
+              }
               return
+            }
             gsap.set([stem, ...paths], {
               strokeDasharray: 1,
               strokeDashoffset: 1,
             })
-            gsap.set(branches, { autoAlpha: 0, y: 10 })
-            gsap.set(conclusion, { autoAlpha: 0, y: 8 })
+            gsap.set(introduction, { autoAlpha: 0, y: -8 })
+            gsap.set(branches, {
+              autoAlpha: 0,
+              clipPath: "inset(0 0 100% 0)",
+            })
+            gsap.set(conclusion, { autoAlpha: 0, y: -8 })
             const timeline = gsap
               .timeline({ paused: true })
               .addLabel("question", 0)
-              .to({}, { duration: 0.16 })
+              .to(introduction, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.08,
+                stagger: 0.035,
+                ease: "none",
+              })
               .to(
                 stem,
-                { strokeDashoffset: 0, duration: 0.12, ease: "none" },
-                0.16
+                { strokeDashoffset: 0, duration: 0.08, ease: "none" },
+                0.24
               )
               .to(
                 paths,
-                { strokeDashoffset: 0, duration: 0.22, ease: "none" },
-                0.28
+                { strokeDashoffset: 0, duration: 0.14, ease: "none" },
+                0.32
               )
               .to(
                 branches,
-                { autoAlpha: 1, y: 0, duration: 0.16, ease: "power2.out" },
-                0.42
+                {
+                  autoAlpha: 1,
+                  clipPath: "inset(0 0 0% 0)",
+                  duration: 0.22,
+                  stagger: 0.04,
+                  ease: "none",
+                },
+                0.48
               )
-              .addLabel("paths", 0.58)
-              .to(conclusion, { autoAlpha: 1, y: 0, duration: 0.14 }, 0.7)
-              .addLabel("opportunity", 0.84)
-              .to({}, { duration: 0.16 }, 0.84)
+              .addLabel("paths", 0.74)
+              .to(conclusion, { autoAlpha: 1, y: 0, duration: 0.14 }, 0.78)
+              .addLabel("opportunity", 0.92)
+              .to({}, { duration: 0.08 }, 0.92)
             const width = window.innerWidth
             const height = window.innerHeight
             const cleanup = createScrollScene({
@@ -127,8 +197,6 @@ export function SecondLife() {
               element: section,
               timeline,
               screens: 1.2,
-              stops: [0, 0.6, 0.92, 1],
-              wheelStops: [0, 0.6, 0.92],
               refreshPriority: -5,
               onUpdate: (trigger) => {
                 if (

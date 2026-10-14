@@ -10,6 +10,7 @@
 @import "./rebirth.css";
 @import "./memorial.css";
 @import "./shutdown.css";
+@import "./footer.css";
 
 @custom-variant dark (&:is(.dark *));
 

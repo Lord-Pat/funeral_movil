@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useState } from "react"
+import Image from "next/image"
 import { ScrollBattery } from "@/components/scroll-battery"
 import { Menu, X } from "lucide-react"
 
@@ -62,12 +63,15 @@ const Navbar1 = () => {
           aria-label="Funeral de tu Móvil, inicio"
           className="flex shrink-0 items-center gap-2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-primary)] sm:gap-3"
         >
-          <span
-            aria-hidden="true"
-            className="flex size-9 items-center justify-center rounded-full bg-[var(--bg-dark)] text-xl font-semibold text-[var(--bg-light)]"
-          >
-            F
-          </span>
+          <Image
+            src="/images/logo_funeral_navbar.webp"
+            alt=""
+            width={1254}
+            height={1254}
+            sizes="(min-width: 640px) 40px, 36px"
+            loading="eager"
+            className="size-9 shrink-0 object-contain sm:size-10"
+          />
           <span className="flex flex-col">
             <span className="text-sm leading-tight font-bold tracking-[0.08em]">
               FUNERAL.

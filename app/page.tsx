@@ -9,9 +9,11 @@ import { FuneralSteps } from "@/components/funeral-steps"
 import { SecondLife } from "@/components/second-life"
 import { MemorialCard } from "@/components/memorial-card"
 import { FinalShutdown } from "@/components/final-shutdown"
+import { Footer } from "@/components/footer"
 
 export default function Page() {
   return (
+    <>
     <main className="w-full">
       <section id="hero" aria-label="Hero" className="bg-dark hero-section">
         <header className="absolute inset-x-0 top-0">
@@ -89,5 +91,7 @@ export default function Page() {
       <MemorialCard />
       <FinalShutdown />
     </main>
+    <Footer />
+    </>
   )
 }
